@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Voyage</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        form { margin-top: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #666; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px; font-size: 14px; }
+        .btn { padding: 10px 20px; text-decoration: none; border-radius: 3px; margin-right: 10px; border: none; cursor: pointer; font-size: 14px; }
+        .btn-submit { background-color: #28a745; color: white; }
+        .back { background-color: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="${voyage.idVoyage != null} ? 'Éditer Voyage' : 'Créer Voyage'"></h1>
+        
+        <form th:action="${voyage.idVoyage != null} ? @{/voyages/{id}/update(id=${voyage.idVoyage})} : @{/voyages/create}" method="POST">
+            <div class="form-group">
+                <label for="daty">Date:</label>
+                <input type="date" id="daty" name="daty" th:value="${voyage.daty}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="heuredepart">Heure Départ:</label>
+                <input type="time" id="heuredepart" name="heuredepart" th:value="${voyage.heuredepart}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="modeleVoyageId">Modèle:</label>
+                <select id="modeleVoyageId" name="modeleVoyageId" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option th:each="m : ${modeles}" th:value="${m.idModeleVoyage}" th:selected="${voyage.modeleVoyage?.idModeleVoyage == m.idModeleVoyage}" th:text="${m.libelleModeleVoyage}"></option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="voitureId">Voiture:</label>
+                <select id="voitureId" name="voitureId" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option th:each="v : ${voitures}" th:value="${v.idVoiture}" th:selected="${voyage.voiture?.idVoiture == v.idVoiture}" th:text="${v.immatriculation}"></option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="chauffeerId">Chauffeur:</label>
+                <select id="chauffeerId" name="chauffeerId" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option th:each="e : ${employes}" th:value="${e.id}" th:selected="${voyage.chauffeur?.id == e.id}" th:text="${e.nom}"></option>
+                </select>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-submit">Enregistrer</button>
+                <a th:href="@{/voyages}" class="btn back">Annuler</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

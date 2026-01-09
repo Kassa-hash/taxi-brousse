@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails Client</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        .info { margin: 15px 0; }
+        .info-label { font-weight: bold; color: #666; }
+        .actions { margin-top: 20px; }
+        .btn { padding: 10px 20px; text-decoration: none; border-radius: 3px; margin-right: 10px; display: inline-block; }
+        .btn-edit { background-color: #ffc107; color: white; }
+        .btn-delete { background-color: #dc3545; color: white; }
+        .back { background-color: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Détails Client</h1>
+        
+        <div class="info">
+            <span class="info-label">ID:</span> <span th:text="${client.idClient}"></span>
+        </div>
+        <div class="info">
+            <span class="info-label">Nom:</span> <span th:text="${client.nom}"></span>
+        </div>
+        <div class="info">
+            <span class="info-label">Téléphone:</span> <span th:text="${client.telephone}"></span>
+        </div>
+        <div class="info">
+            <span class="info-label">Catégorie:</span> <span th:text="${client.categorieClient.libelleCategorieClient}"></span>
+        </div>
+        <div class="info">
+            <span class="info-label">Type:</span> <span th:text="${client.typeClient.libelleTypeClient}"></span>
+        </div>
+        
+        <div class="actions">
+            <a th:href="@{/clients/{id}/edit(id=${client.idClient})}" class="btn btn-edit">Éditer</a>
+            <a th:href="@{/clients/{id}/delete(id=${client.idClient})}" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>
+            <a th:href="@{/clients}" class="btn back">Retour à la liste</a>
+        </div>
+    </div>
+</body>
+</html>

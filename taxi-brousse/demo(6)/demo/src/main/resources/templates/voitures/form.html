@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Voiture</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        form { margin-top: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #666; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px; font-size: 14px; }
+        .btn { padding: 10px 20px; text-decoration: none; border-radius: 3px; margin-right: 10px; border: none; cursor: pointer; font-size: 14px; }
+        .btn-submit { background-color: #28a745; color: white; }
+        .back { background-color: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="${voiture.idVoiture != null} ? 'Éditer Voiture' : 'Créer Voiture'"></h1>
+        
+        <form th:action="${voiture.idVoiture != null} ? @{/voitures/{id}/update(id=${voiture.idVoiture})} : @{/voitures/create}" method="POST">
+            <div class="form-group">
+                <label for="immatriculation">Immatriculation:</label>
+                <input type="text" id="immatriculation" name="immatriculation" th:value="${voiture.immatriculation}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="nbplace">Nombre de Places:</label>
+                <input type="number" id="nbplace" name="nbplace" th:value="${voiture.nbplace}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="noteetat">Note État:</label>
+                <input type="number" id="noteetat" name="noteetat" step="0.1" th:value="${voiture.noteetat}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="datearivee">Date Arrivée:</label>
+                <input type="date" id="datearivee" name="datearivee" th:value="${voiture.datearivee}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="etatId">État:</label>
+                <select id="etatId" name="etatId" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option th:each="e : ${etats}" th:value="${e.idEtat}" th:selected="${voiture.etat?.idEtat == e.idEtat}" th:text="${e.libelleEtat}"></option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="marqueId">Marque:</label>
+                <select id="marqueId" name="marqueId" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option th:each="m : ${marques}" th:value="${m.idMarque}" th:selected="${voiture.marque?.idMarque == m.idMarque}" th:text="${m.libelleMarque}"></option>
+                </select>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-submit">Enregistrer</button>
+                <a th:href="@{/voitures}" class="btn back">Annuler</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

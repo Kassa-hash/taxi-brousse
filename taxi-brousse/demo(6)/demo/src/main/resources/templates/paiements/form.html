@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Paiement</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        form { margin-top: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #666; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px; font-size: 14px; }
+        .btn { padding: 10px 20px; text-decoration: none; border-radius: 3px; margin-right: 10px; border: none; cursor: pointer; font-size: 14px; }
+        .btn-submit { background-color: #28a745; color: white; }
+        .back { background-color: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="${paiement.idPaiement != null} ? 'Éditer Paiement' : 'Créer Paiement'"></h1>
+        
+        <form th:action="${paiement.idPaiement != null} ? @{/paiements/{id}/update(id=${paiement.idPaiement})} : @{/paiements/create}" method="POST">
+            <div class="form-group">
+                <label for="montant">Montant:</label>
+                <input type="number" id="montant" name="montant" step="0.01" th:value="${paiement.montant}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" th:value="${paiement.date}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="typePaiementId">Type Paiement:</label>
+                <select id="typePaiementId" name="typePaiementId" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option th:each="t : ${types}" th:value="${t.idTypePaiement}" th:selected="${paiement.typePaiement?.idTypePaiement == t.idTypePaiement}" th:text="${t.libelleTypePaiement}"></option>
+                </select>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn btn-submit">Enregistrer</button>
+                <a th:href="@{/paiements}" class="btn back">Annuler</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+psql -U postgres
+--liste base
+\l
+--se connecter à la base
+\c ma_base
+
+
+--liste tables
+\dt
+\d client
