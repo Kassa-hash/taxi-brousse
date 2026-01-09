@@ -1,15 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Client;
+import com.example.demo.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ClientService {
-
     @Autowired
     private ClientRepository clientRepository;
 
@@ -17,28 +16,23 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-    public Optional<Client> getClientById(int id) {
+    public Optional<Client> getClientById(Integer id) {
         return clientRepository.findById(id);
     }
 
-    public Client saveClient(Client client) {
+    public Client createClient(Client client) {
         return clientRepository.save(client);
     }
 
-    public Client updateClient(int id, Client client) {
-        Optional<Client> existingClient = clientRepository.findById(id);
-        if (existingClient.isPresent()) {
+    public Client updateClient(Integer id, Client client) {
+        if (clientRepository.existsById(id)) {
             client.setIdClient(id);
             return clientRepository.save(client);
         }
         return null;
     }
 
-    public boolean deleteClient(int id) {
-        if (clientRepository.existsById(id)) {
-            clientRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteClient(Integer id) {
+        clientRepository.deleteById(id);
     }
 }

@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TypePaiement {
+public class GareRoutiere {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idTypePaiement;
+    private Integer idGareRoutiere;
 
-    private String libelle;
+    private String nom;
 }

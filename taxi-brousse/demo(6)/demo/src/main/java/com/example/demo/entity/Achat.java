@@ -10,19 +10,19 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Paiement {
+public class Achat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idPaiement;
+    private Integer idAchat;
 
-    private String montant;
+    private Integer nbplaces;
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "Id_TypePaiement", nullable = false)
-    private TypePaiement typePaiement;
+    @JoinColumn(name = "Id_Voyage", nullable = false)
+    private Voyage voyage;
 
-    @OneToOne
-    @JoinColumn(name = "Id_Achat", nullable = false, unique = true)
-    private Achat achat;
+    @ManyToOne
+    @JoinColumn(name = "Id_Client", nullable = false)
+    private Client client;
 }
