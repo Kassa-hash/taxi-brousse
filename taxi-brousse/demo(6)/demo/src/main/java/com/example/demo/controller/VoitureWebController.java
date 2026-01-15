@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Voiture;
+import com.example.demo.entity.Voyage;
+import com.example.demo.repository.TrajetCategoriePrixRepository;
+import com.example.demo.repository.VoyageRepository;
 import com.example.demo.service.VoitureService;
+import com.example.demo.service.VoyageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +16,20 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/voitures")
 public class VoitureWebController {
-    @Autowired
+
+    @Autowired 
     private VoitureService voitureService;
+
+    @Autowired 
+    private VoyageService voyageService;
+
+    @Autowired 
+    private TrajetCategoriePrixRepository trajetPrixRepo;
+
+    @Autowired 
+    private VoyageRepository voyageRepo;
+
+    // --- Gestion Classique des Voitures ---
 
     @GetMapping
     public String afficherVoitures(Model model) {
@@ -63,5 +79,30 @@ public class VoitureWebController {
     public String supprimer(@PathVariable Integer id) {
         voitureService.deleteVoiture(id);
         return "redirect:/voitures";
+    }
+
+    // --- Nouvelles fonctionnalités : Tarifs et Rentabilité ---
+
+    // Note : Ici l'ID passé doit être l'ID d'un Voyage pour trouver les tarifs associés
+    @GetMapping("/voyage/{idVoyage}/tarifs")
+    public String voirTarifs(@PathVariable Integer idVoyage, Model model) {
+        Voyage voyage = voyageRepo.findById(idVoyage)
+                .orElseThrow(() -> new RuntimeException("Voyage introuvable avec l'ID : " + idVoyage));
+        
+        model.addAttribute("listeTrajetPrix", trajetPrixRepo.findByVoyage(voyage));
+        return "tarifs"; // Assurez-vous que tarifs.html existe
+    }
+
+    // Affiche la valeur maximale qu'une voiture peut générer pour un voyage précis
+    @GetMapping("/voyage/{idVoyage}/rentabilite")
+    public String voirRentabilite(@PathVariable Integer idVoyage, Model model) {
+        Voyage voyage = voyageRepo.findById(idVoyage)
+                .orElseThrow(() -> new RuntimeException("Voyage introuvable avec l'ID : " + idVoyage));
+        
+        double max = voyageService.calculerValeurMaximale(voyage);
+
+        model.addAttribute("voyage", voyage);
+        model.addAttribute("valeurMax", max);
+        return "valeur-max"; // Assurez-vous que valeur-max.html existe
     }
 }

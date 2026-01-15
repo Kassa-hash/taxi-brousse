@@ -144,14 +144,8 @@ CREATE TABLE Client(
    FOREIGN KEY(Id_genre) REFERENCES genre(Id_genre)
 );
 
-CREATE TABLE Place(
-   Id_Place SERIAL,
-   numero INTEGER,
-   statut BOOLEAN,
-   Id_Client INTEGER,
-   PRIMARY KEY(Id_Place),
-   FOREIGN KEY(Id_Client) REFERENCES Client(Id_Client)
-);
+
+
 
 CREATE TABLE ModeleVoyage(
    Id_ModeleVoyage SERIAL,

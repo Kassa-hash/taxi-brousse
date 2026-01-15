@@ -85,4 +85,16 @@ public class Voyage {
     @ManyToOne
     @JoinColumn(name = "Id_GareRoutiere_1", nullable = false)
     private GareRoutiere gareArrivee;
+
+    public Voiture getVoiture() {
+        return voiture;
+    }
+
+    public void setVoiture(Voiture voiture) {
+        this.voiture = voiture;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "Id_Voiture") // Ajout du lien vers la voiture utilisée
+    private Voiture voiture;
 }

@@ -32,6 +32,9 @@ public class AchatWebController {
     @Autowired
     private TypePaiementService typePaiementService;
 
+      @Autowired
+    private CategoriePlaceService categoriePlaceService;
+
     // Afficher la liste des achats
     @GetMapping
     public String afficherListeAchats(Model model) {
@@ -50,6 +53,8 @@ public class AchatWebController {
     public String afficherRecherche(Model model) {
         List<GareRoutiere> gares = gareRoutiereService.getAllGareRoutiere();
         model.addAttribute("gares", gares);
+        List<CategoriePlace> categories = categoriePlaceService.getAll();
+        model.addAttribute("categories", categories);
         return "achats/recherche";
     }
 
