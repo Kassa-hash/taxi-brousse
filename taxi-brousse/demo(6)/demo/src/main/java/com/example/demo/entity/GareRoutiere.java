@@ -14,5 +14,21 @@ public class GareRoutiere {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idGareRoutiere;
 
+    public Integer getIdGareRoutiere() {
+        return idGareRoutiere;
+    }
+
+    public void setIdGareRoutiere(Integer idGareRoutiere) {
+        this.idGareRoutiere = idGareRoutiere;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     private String nom;
 }

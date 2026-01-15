@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Voyages</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +12,7 @@
             background-color: #f4f4f4;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             background-color: white;
             padding: 20px;
@@ -30,9 +31,6 @@
             border-radius: 3px;
             margin-bottom: 20px;
         }
-        a.btn:hover {
-            background-color: #218838;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -41,7 +39,7 @@
         th, td {
             border: 1px solid #ddd;
             padding: 12px;
-            text-align: left;
+            text-align: center;
         }
         th {
             background-color: #007bff;
@@ -52,21 +50,22 @@
         }
         .actions {
             display: flex;
+            justify-content: center;
             gap: 10px;
-        }
-        .btn-edit, .btn-delete {
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 3px;
-            font-size: 12px;
         }
         .btn-edit {
             background-color: #ffc107;
             color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
         }
         .btn-delete {
             background-color: #dc3545;
             color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
         }
         a.back {
             display: inline-block;
@@ -79,43 +78,54 @@
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Gestion des Voyages</h1>
-        <a th:href="@{/voyages/new}" class="btn">+ Nouveau Voyage</a>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Date</th>
-                    <th>Heure Départ</th>
-                    <th>Modèle</th>
-                    <th>Voiture</th>
-                    <th>Chauffeur</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="voyage : ${voyages}">
-                    <td th:text="${voyage.idVoyage}"></td>
-                    <td th:text="${voyage.daty}"></td>
-                    <td th:text="${voyage.heuredepart}"></td>
-                    <td th:text="${voyage.modeleVoyage.libelleModeleVoyage}"></td>
-                    <td th:text="${voyage.voiture.immatriculation}"></td>
-                    <td th:text="${voyage.chauffeur.nom}"></td>
-                    <td>
-                        <div class="actions">
-                            <a th:href="@{/voyages/{id}(id=${voyage.idVoyage})}" class="btn-edit">Voir</a>
-                            <a th:href="@{/voyages/{id}/edit(id=${voyage.idVoyage})}" class="btn-edit">Éditer</a>
-                            <a th:href="@{/voyages/{id}/delete(id=${voyage.idVoyage})}" class="btn-delete" onclick="return confirm('Êtes-vous sûr?')">Supprimer</a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <a th:href="@{/}" class="back">Retour à l'accueil</a>
-    </div>
+<div class="container">
+
+    <h1>Gestion des Voyages</h1>
+
+    <a th:href="@{/voyages/new}" class="btn">+ Nouveau Voyage</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date départ</th>
+            <th>Heure départ</th>
+            <th>Gare départ</th>
+            <th>Gare arrivée</th>
+            <th>Places dispo</th>
+            <th>Prix</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="voyage : ${voyages}">
+            <td th:text="${voyage.idVoyage}"></td>
+            <td th:text="${voyage.datedepart}"></td>
+            <td th:text="${voyage.heuredepart}"></td>
+
+            <!-- À adapter selon les champs de GareRoutiere -->
+            <td th:text="${voyage.gareDepart.nom}"></td>
+            <td th:text="${voyage.gareArrivee.nom}"></td>
+
+            <td th:text="${voyage.nbPlaceDisponible}"></td>
+            <td th:text="${voyage.prix} + ' Ar'"></td>
+
+            <td class="actions">
+                <a th:href="@{/voyages/{id}(id=${voyage.idVoyage})}" class="btn-edit">Voir</a>
+                <a th:href="@{/voyages/{id}/edit(id=${voyage.idVoyage})}" class="btn-edit">Éditer</a>
+                <a th:href="@{/voyages/{id}/delete(id=${voyage.idVoyage})}"
+                   class="btn-delete"
+                   onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/}" class="back">Retour à l'accueil</a>
+
+</div>
 </body>
 </html>

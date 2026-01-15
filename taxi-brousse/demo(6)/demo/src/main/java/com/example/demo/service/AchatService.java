@@ -35,4 +35,12 @@ public class AchatService {
     public void deleteAchat(Integer id) {
         achatRepository.deleteById(id);
     }
+
+    // Calculer le chiffre d'affaires total
+    public Integer calculateChiffreAffaires() {
+        List<Achat> achats = getAllAchats();
+        return achats.stream()
+                .mapToInt(achat -> achat.getVoyage().getPrix() * achat.getNbplaces())
+                .sum();
+    }
 }

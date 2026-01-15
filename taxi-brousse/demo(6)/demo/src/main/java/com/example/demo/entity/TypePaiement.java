@@ -14,5 +14,21 @@ public class TypePaiement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idTypePaiement;
 
+    public Integer getIdTypePaiement() {
+        return idTypePaiement;
+    }
+
+    public void setIdTypePaiement(Integer idTypePaiement) {
+        this.idTypePaiement = idTypePaiement;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
     private String libelle;
 }

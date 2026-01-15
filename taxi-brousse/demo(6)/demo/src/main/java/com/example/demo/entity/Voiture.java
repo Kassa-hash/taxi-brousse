@@ -14,5 +14,21 @@ public class Voiture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idVoiture;
 
+    public Integer getIdVoiture() {
+        return idVoiture;
+    }
+
+    public void setIdVoiture(Integer idVoiture) {
+        this.idVoiture = idVoiture;
+    }
+
+    public Integer getCapacite() {
+        return capacite;
+    }
+
+    public void setCapacite(Integer capacite) {
+        this.capacite = capacite;
+    }
+
     private Integer capacite;
 }

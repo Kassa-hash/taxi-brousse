@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket de Transport</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e5e7eb;
+        }
+        .ticket {
+            background: #1e293b;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+        .ticket-header {
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid #334155;
+        }
+        .ticket-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .ticket-number {
+            font-size: 14px;
+            opacity: 0.8;
+            color: #cbd5f5;
+        }
+        .divider {
+            height: 1px;
+            background: #334155;
+            margin: 20px 0;
+        }
+        .ticket-body {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section-title {
+            color: #38bdf8;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #334155;
+        }
+        .row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .label {
+            font-weight: 600;
+            color: #f8fafc;
+        }
+        .value {
+            color: #cbd5f5;
+        }
+        .route {
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            background: #0f172a;
+            border: 1px solid #334155;
+        }
+        .from-to {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .city {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f8fafc;
+        }
+        .arrow {
+            font-size: 24px;
+            color: #38bdf8;
+        }
+        .time-info {
+            color: #cbd5f5;
+            font-size: 14px;
+        }
+        .total-box {
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid #334155;
+        }
+        .total-label {
+            font-size: 14px;
+            opacity: 0.8;
+            color: #cbd5f5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .total-amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-top: 10px;
+        }
+        .barcode {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 8px;
+            background: #0f172a;
+            border: 1px solid #334155;
+        }
+        .barcode-text {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            letter-spacing: 5px;
+            color: #38bdf8;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .barcode-label {
+            font-size: 12px;
+            color: #cbd5f5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .ticket-footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #334155;
+            background: #0f172a;
+        }
+        .footer-text {
+            color: #cbd5f5;
+            font-size: 12px;
+            margin: 8px 0;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        button, a {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.25s ease;
+        }
+        .btn-primary {
+            background-color: #38bdf8;
+            color: #0f172a;
+        }
+        .btn-primary:hover {
+            background-color: #0ea5e9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+        }
+        .btn-secondary {
+            background-color: #334155;
+            color: #e5e7eb;
+        }
+        .btn-secondary:hover {
+            background-color: #475569;
+            transform: translateY(-2px);
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .button-group {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        <div class="ticket-header">
+            <h1>🎫 TICKET DE TRANSPORT</h1>
+            <p class="ticket-number">N° <span th:text="${achat.idAchat}"></span></p>
+        </div>
+
+        <div class="ticket-body">
+            <!-- Informations Passager -->
+            <div class="section">
+                <div class="section-title">Passager</div>
+                <div class="row">
+                    <span class="label">Nom:</span>
+                    <span class="value" th:text="${nomClient}"></span>
+                </div>
+                <div class="row">
+                    <span class="label">Email:</span>
+                    <span class="value" th:text="${emailClient}"></span>
+                </div>
+            </div>
+
+            <!-- Itinéraire -->
+            <div class="section">
+                <div class="section-title">Itinéraire</div>
+                <div class="route">
+                    <div class="from-to">
+                        <span class="city" th:text="${voyage.gareDepart.nom}"></span>
+                        <span class="arrow">→</span>
+                        <span class="city" th:text="${voyage.gareArrivee.nom}"></span>
+                    </div>
+                    <div class="time-info">
+                        <span th:text="${#temporals.format(voyage.datedepart, 'dd MMMM yyyy')}"></span> à
+                        <span th:text="${#temporals.format(voyage.heuredepart, 'HH:mm')}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Détails du Voyage -->
+            <div class="section">
+                <div class="section-title">Détails</div>
+                <div class="row">
+                    <span class="label">Nombre de places:</span>
+                    <span class="value" th:text="${nbPlaces}"></span>
+                </div>
+                <div class="row">
+                    <span class="label">Prix unitaire:</span>
+                    <span class="value" th:text="${voyage.prix + ' $'}"></span>
+                </div>
+                <div class="row">
+                    <span class="label">Date d'achat:</span>
+                    <span class="value" th:text="${#temporals.format(achat.date, 'dd/MM/yyyy HH:mm')}"></span>
+                </div>
+            </div>
+
+            <!-- Total -->
+            <div class="total-box">
+                <div class="total-label">MONTANT PAYÉ</div>
+                <div class="total-amount" th:text="${paiement.montant + ' $'}"></div>
+            </div>
+
+            <!-- Code de Confirmation -->
+            <div class="barcode">
+                <div class="barcode-text" th:text="'ACH-' + ${achat.idAchat} + '-PAY-' + ${paiement.idPaiement}"></div>
+                <div class="barcode-label">Code de Confirmation</div>
+            </div>
+        </div>
+
+        <div class="ticket-footer">
+            <p class="footer-text">✓ Paiement confirmé avec succès</p>
+            <p class="footer-text">Conservez ce ticket pour l'embarquement</p>
+            <p class="footer-text">Merci de votre confiance!</p>
+        </div>
+    </div>
+
+    <div class="button-group" style="margin-top: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+        <button onclick="window.print()" class="btn-primary">🖨️ Imprimer</button>
+        <a href="/achats/recherche" class="btn-secondary">Nouveau Voyage</a>
+    </div>
+</body>
+</html>

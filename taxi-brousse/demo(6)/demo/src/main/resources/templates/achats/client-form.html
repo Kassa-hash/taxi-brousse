@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire Client</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e5e7eb;
+        }
+
+        .container {
+            background-color: #1e293b;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid #334155;
+        }
+
+        h1 {
+            color: #f8fafc;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .section-title {
+            color: #38bdf8;
+            font-size: 17px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #0f172a;
+            color: #f8fafc;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+        }
+
+        .voyage-details {
+            background-color: #0f172a;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+
+        .voyage-details p {
+            margin: 10px 0;
+            color: #cbd5f5;
+            font-size: 14px;
+        }
+
+        .voyage-details strong {
+            color: #f8fafc;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        button,
+        .btn-secondary {
+            flex: 1;
+            padding: 13px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: #38bdf8;
+            color: #0f172a;
+        }
+
+        .btn-primary:hover {
+            background-color: #0ea5e9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #334155;
+            color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>👤 Informations Client</h1>
+
+    <div class="section-title">Détails du Voyage</div>
+    <div class="voyage-details">
+        <p>
+            <strong>Trajet :</strong>
+            <span th:text="${voyage.gareDepart.nom}"></span> →
+            <span th:text="${voyage.gareArrivee.nom}"></span>
+        </p>
+
+        <p>
+            <strong>Date & Heure :</strong>
+            <span th:text="${#temporals.format(voyage.datedepart, 'dd/MM/yyyy')}"></span>
+            à
+            <span th:text="${#temporals.format(voyage.heuredepart, 'HH:mm')}"></span>
+        </p>
+
+        <p>
+            <strong>Prix par place :</strong>
+            <span th:text="${voyage.prix}"></span> $
+        </p>
+
+        <p>
+            <strong>Nombre de places :</strong>
+            <span th:text="${nbPlaces}"></span>
+        </p>
+
+        <p>
+            <strong style="color:#38bdf8;">Total :</strong>
+            <span th:text="${voyage.prix * nbPlaces}"></span> $
+        </p>
+    </div>
+
+    <form th:action="@{/achats/confirmation}" method="post">
+        <!-- Champs cachés -->
+        <input type="hidden" name="idVoyage" th:value="${voyage.idVoyage}">
+        <input type="hidden" name="nbPlaces" th:value="${nbPlaces}">
+
+        <div class="section-title">Informations du Client</div>
+
+        <div class="form-group">
+            <label for="nomClient">Nom du Client</label>
+            <input type="text" id="nomClient" name="nomClient" required>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn-primary">
+                Continuer vers la confirmation
+            </button>
+            <a href="/achats/recherche" class="btn-secondary">
+                Retour
+            </a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
